@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Adaugă Rețetă Nouă</h2>
+<form method="post">
+    <label>Nume rețetă:</label>
+    <input type="text" name="name" required><br>
+
+    <label>Ingrediente (ex: "100g orez"):</label><br>
+    <input type="text" name="ingredient" required><br>
+    <input type="text" name="ingredient"><br>
+    <input type="text" name="ingredient"><br>
+    <button type="submit">💾 Salvează</button>
+</form>
+<p><a href="{{ url_for('index') }}">⬅ Înapoi</a></p>
+{% endblock %}

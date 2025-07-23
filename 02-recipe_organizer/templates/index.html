@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Rețetele Salvate</h2>
+<p><a href="{{ url_for('add') }}">➕ Adaugă rețetă nouă</a></p>
+
+{% for recipe in recipes %}
+<div class="card">
+  <h3>{{ recipe.name }}</h3>
+  <p><strong>Data:</strong> {{ recipe.created_at }}</p>
+  <p><strong>Calorii:</strong> {{ recipe.total.calories | round }} kcal</p>
+  <p><strong>Proteine:</strong> {{ recipe.total.protein | round(1) }} g</p>
+  <p><strong>Grăsimi:</strong> {{ recipe.total.fat | round(1) }} g</p>
+  <p><strong>Carbo:</strong> {{ recipe.total.carbs | round(1) }} g</p>
+
+  <details>
+    <summary>Ingrediente</summary>
+    <ul>
+    {% for i in recipe.ingredients %}
+        <li>{{ i.input }} → {{ i.calories | round }} kcal</li>
+    {% endfor %}
+    </ul>
+  </details>
+</div>
+{% else %}
+<p>Nu ai salvat nicio rețetă încă.</p>
+{% endfor %}
+{% endblock %}
