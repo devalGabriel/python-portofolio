@@ -51,8 +51,7 @@ This web application helps you manage your daily income and expenses with clarit
 ### 🔧 Pași pentru rulare locală / Run locally:
 
 ```bash
-git clone https://github.com/<user>/Portofoliu-Python.git
-cd Portofoliu-Python/01-optimizator-buget-personal
+
 pip install -r requirements.txt
 python app.py
 
