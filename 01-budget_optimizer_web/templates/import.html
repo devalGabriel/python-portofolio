@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Importă extrase bancare (.csv)</h2>
+
+<form method="post" enctype="multipart/form-data">
+    <label>Alege fișierul CSV:</label>
+    <input type="file" name="file" accept=".csv" required>
+    <button type="submit">📥 Importă</button>
+</form>
+
+<p><a href="{{ url_for('index') }}">⬅ Înapoi</a></p>
+{% endblock %}

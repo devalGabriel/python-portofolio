@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Raport pentru luna {{ month }}</h2>
+<p><strong>Venit:</strong> {{ report.income }} lei</p>
+<p><strong>Cheltuieli:</strong> {{ report.expenses }} lei</p>
+<p><strong>Sold:</strong> {{ report.balance }} lei</p>
+<p><strong>Grad îndatorare:</strong> {{ report.risk }}%</p>
+
+<h3>Scenariu de optimizare:</h3>
+<pre>{{ scenario }}</pre>
+
+<h3>🧠 Analiză AI comportament financiar:</h3>
+<p><strong>Scor comportament:</strong> {{ ai.score }} / 100</p>
+<ul>
+    {% for line in ai.alerts %}
+        <li>{{ line }}</li>
+    {% else %}
+        <li>Totul pare echilibrat în această lună.</li>
+    {% endfor %}
+</ul>
+
+<p><a href="{{ url_for('add') }}">➕ Adaugă tranzacție</a></p>
+<p><a href="{{ url_for('report', month=month) }}">📄 Descarcă raport PDF</a></p>
+<p><a href="{{ url_for('import_csv') }}">📤 Importă fișier .csv</a></p>
+{% endblock %}
