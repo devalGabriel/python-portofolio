@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Habit Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>📅 Habit Tracker</h1>
+        <nav>
+            <a class="button" href="{{ url_for('add') }}">➕ Adaugă obicei</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="status">
+            <h2>✅ Statusul zilei</h2>
+            <p>{{ status.completed }} din {{ status.total }} obiceiuri completate azi</p>
+        </section>
+
+        <section class="insights">
+            <h2>🧠 Analiză AI</h2>
+            <ul class="insight-list">
+                {% for msg in insights %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section class="habit-list">
+            <h2>📋 Obiceiuri urmărite</h2>
+            {% if habits %}
+            <ul>
+                {% for habit in habits %}
+                <li style="border-left: 5px solid {{ habit.color }}">
+                    <strong>{{ habit.name }}</strong> ({{ habit.frequency }})<br>
+                    <small>{{ habit.count }} zile înregistrate</small><br>
+                    <a href="{{ url_for('mark', habit_name=habit.name) }}" class="button small">✔ Marchează azi</a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>Niciun obicei definit încă.</p>
+            {% endif %}
+        </section>
+
+        <section class="chart">
+            <h2>📈 Evoluție</h2>
+            <img src="{{ url_for('chart') }}" alt="Habit Progress Chart" class="chart-img">
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Raport Lunar - Habit Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>📄 Raport Lunar - {{ month }}</h1>
+        <nav>
+            <a class="button" href="{{ url_for('index') }}">⬅ Înapoi</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="summary">
+            <h2>✅ Rezumat</h2>
+            <ul>
+                {% for habit in report %}
+                <li>
+                    <strong>{{ habit.name }}</strong>: {{ habit.count }} zile marcate
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section class="insights">
+            <h2>🧠 Recomandări AI</h2>
+            <ul>
+                {% for insight in insights %}
+                <li>{{ insight }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section class="chart">
+            <h2>📈 Grafic evoluție</h2>
+            <img src="{{ url_for('chart') }}" alt="Grafic Obiceiuri" class="chart-img">
+        </section>
+    </main>
+</body>
+</html>
