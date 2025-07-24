@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Rezultat analiză</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>🧠 Rezultate analiză pentru: {{ filename }}</h1>
+
+    <ul>
+      {% for key, value in results.items() %}
+        {% if key != 'Preview text' %}
+        <li><strong>{{ key }}:</strong>
+          {% if value is iterable and not value|string %}
+            <ul>
+              {% for item in value %}
+                <li>{{ item }}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            {{ value }}
+          {% endif %}
+        </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+
+    <h2>📝 Text extras din PDF</h2>
+    <div class="preview-box">
+      <pre>{{ results["Preview text"] }}</pre>
+    </div>
+
+    {% if not export_mode %}
+      <a href="{{ url_for('download') }}">📥 Descarcă raport PDF</a>
+    {% endif %}
+  </div>
+</body>
+</html>

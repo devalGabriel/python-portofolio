@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Analizator PDF</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>📄 Analizator PDF Automat</h1>
+    <form method="POST" enctype="multipart/form-data">
+      <input type="file" name="pdf_file" required>
+      <button type="submit">Încarcă și analizează</button>
+    </form>
+  </div>
+</body>
+</html>

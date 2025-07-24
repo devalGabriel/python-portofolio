@@ -1,0 +1,42 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 90%;
+  max-width: 600px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 30px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+a {
+  display: inline-block;
+  margin-top: 20px;
+  color: #0077cc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.preview-box {
+  max-height: 300px;
+  overflow-y: auto;
+  background: #f0f0f0;
+  padding: 15px;
+  border: 1px solid #ccc;
+  white-space: pre-wrap;
+  font-family: monospace;
+}
