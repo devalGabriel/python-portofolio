@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Generează Document</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>📄 Generator Documente PDF</h1>
+  <form action="/create" method="get">
+    <label>Alege tipul documentului:</label>
+    <select name="type">
+      <option value="cv">CV</option>
+      <option value="letter">Scrisoare de intenție</option>
+    </select>
+
+    <label>Alege șablonul:</label>
+    <select name="template">
+      <option value="basic">Basic</option>
+      <option value="modern">Modern</option>
+    </select>
+
+    <button type="submit">Continuă ➡️</button>
+  </form>
+</body>
+</html>

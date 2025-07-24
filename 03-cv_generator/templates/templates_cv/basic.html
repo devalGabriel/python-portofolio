@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: Arial; padding: 40px; }
+  </style>
+</head>
+<body>
+  <h1>{{ name }}</h1>
+  <p><strong>Contact:</strong> {{ contact }}</p>
+
+  <h2>Educație</h2>
+  <ul>
+    {% for edu in education %}
+      <li>{{ edu.title }} ({{ edu.start }} – {{ edu.end }})</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Experiență</h2>
+  <ul>
+    {% for exp in experience %}
+      <li>{{ exp.role }} ({{ exp.start }} – {{ exp.end }})</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Competențe</h2>
+  <ul>
+    {% for skill in skills %}
+      <li>{{ skill }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

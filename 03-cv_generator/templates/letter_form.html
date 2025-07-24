@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Scrisoare de intenție</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>✍️ Scrisoare de intenție</h1>
+  <form action="/generate-letter" method="POST">
+    <input type="hidden" name="template" value="{{ template }}">
+    <input type="text" name="name" placeholder="Nume complet" required>
+    <input type="text" name="position" placeholder="Poziția vizată" required>
+    <textarea name="message" placeholder="Mesajul" rows="6" required></textarea>
+    <br>
+    <button type="submit">Generează PDF</button>
+  </form>
+</body>
+</html>
