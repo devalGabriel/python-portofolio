@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Prognoză {{ forecast['city'] }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Prognoză detaliată pentru {{ forecast['city'] }}</h1>
+        {% if forecast %}
+            <ul>
+                {% for zi, temp in paired %}
+                    <li>{{ zi }} — {{ temp }} °C</li>
+                {% endfor %}
+            </ul>
+            {% if chart_url %}
+                <img src="{{ chart_url }}" style="max-width:600px;">
+            {% endif %}
+        {% else %}
+            <p>Date indisponibile pentru acest oraș.</p>
+        {% endif %}
+        <a href="{{ url_for('index') }}">⬅ Înapoi la căutare</a>
+    </div>
+</body>
+</html>

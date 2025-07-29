@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🌤 Dashboard Meteo</h1>
+        <form method="POST">
+            <input type="text" name="city" placeholder="Introdu oraș..." required>
+            <button type="submit">Afișează prognoza</button>
+        </form>
+        {% if favorites %}
+            <h3>Favorite:</h3>
+            <ul>
+                {% for fav in favorites %}
+                    <li>
+                        <a href="{{ url_for('forecast', city=fav) }}">{{ fav }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if forecast %}
+            <h2>Prognoză pentru {{ forecast['city'] }}</h2>
+            <ul>
+                {% for zi, temp in paired %}                    <li>{{ zi }} — {{ temp }} °C</li>
+                {% endfor %}
+            </ul>
+            {% if chart_url %}
+                <img src="{{ chart_url }}" style="max-width:600px;">
+            {% endif %}
+            <form method="POST" action="{{ url_for('save_city') }}">
+                <input type="hidden" name="city" value="{{ forecast['city'] }}">
+                <button type="submit">Salvează la favorite</button>
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+.env.*
+venv/
+ENV/
+data/favorites.json
+static/chart_*.png
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
