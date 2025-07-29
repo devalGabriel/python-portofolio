@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Analizator OCR Bon Fiscal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>🧾 Analizator Bon Fiscal</h1>
+    <form method="POST" enctype="multipart/form-data">
+      <input type="file" name="image_file" required>
+      <button type="submit">Încarcă bon</button>
+    </form>
+    {% if result %}
+      <h2>Rezultat:</h2>
+      <ul>
+        <li><b>Data:</b> {{ result['date'] }}</li>
+        <li><b>Total:</b> {{ result['total'] }}</li>
+        <li><b>Produse:</b>
+          <ul>
+            {% for item in result['items'] %}
+            <li>{{ item['product'] }} — {{ item['price'] }} lei</li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li><b>Avertizări AI:</b>
+          <ul>
+            {% for w in ai_result %}
+            <li>{{ w }}</li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li><b>Text extras:</b>
+          <pre style="max-height:200px; overflow:auto; background:#f0f0f0;">{{ result['raw_text'] }}</pre>
+        </li>
+      </ul>
+      <a href="{{ url_for('export', fmt='json') }}">Exportă JSON</a> |
+      <a href="{{ url_for('export', fmt='csv') }}">Exportă CSV</a>
+    {% endif %}
+  </div>
+</body>
+</html>
