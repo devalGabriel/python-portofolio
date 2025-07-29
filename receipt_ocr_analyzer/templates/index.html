@@ -13,28 +13,34 @@
       <button type="submit">Încarcă bon</button>
     </form>
     {% if result %}
+    <h2>Text extras OCR:</h2>
+        <pre style="max-height:120px;overflow:auto;background:#f0f0f0;">
+            {{ result['raw_text'] }}
+        </pre>
       <h2>Rezultat:</h2>
-      <ul>
-        <li><b>Data:</b> {{ result['date'] }}</li>
-        <li><b>Total:</b> {{ result['total'] }}</li>
-        <li><b>Produse:</b>
-          <ul>
+      <table>
+        <thead>
+            <tr>
+            <th>Produs</th>
+            <th>Cantitate</th>
+            <th>Preț unitar</th>
+            <th>Total</th>
+            <th>Categorie</th>
+            </tr>
+        </thead>
+        <tbody>
             {% for item in result['items'] %}
-            <li>{{ item['product'] }} — {{ item['price'] }} lei</li>
+            <tr>
+            <td>{{ item['product'] }}</td>
+            <td>{{ item['qty'] }}</td>
+            <td>{{ item['price'] }}</td>
+            <td>{{ item['total'] | round(2) }}</td>
+            <td>{{ item['category'] }}</td>
+            </tr>
             {% endfor %}
-          </ul>
-        </li>
-        <li><b>Avertizări AI:</b>
-          <ul>
-            {% for w in ai_result %}
-            <li>{{ w }}</li>
-            {% endfor %}
-          </ul>
-        </li>
-        <li><b>Text extras:</b>
-          <pre style="max-height:200px; overflow:auto; background:#f0f0f0;">{{ result['raw_text'] }}</pre>
-        </li>
-      </ul>
+        </tbody>
+        </table>
+
       <a href="{{ url_for('export', fmt='json') }}">Exportă JSON</a> |
       <a href="{{ url_for('export', fmt='csv') }}">Exportă CSV</a>
     {% endif %}

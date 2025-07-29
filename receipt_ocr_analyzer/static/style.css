@@ -24,3 +24,20 @@ pre {
 ul { padding-left: 1.2em; }
 li { margin-bottom: 0.2em; }
 a { color: #005a9c; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 6px 8px;
+  text-align: left;
+}
+th {
+  background: #e3e8f0;
+}
+tr:nth-child(even) {
+  background: #f6f7fa;
+}
