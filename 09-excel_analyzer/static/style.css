@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f6f9;
+}
+.container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 16px #0001;
+}
+input[type="file"], button {
+    margin: 8px 0;
+    padding: 10px;
+}
+img {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+ul { padding-left: 18px; }
+li { margin-bottom: 2px; }
+a { color: #1976d2; }
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 18px;
+    background: #f8fafc;
+}
+th, td {
+    border: 1px solid #d0d3da;
+    padding: 6px 10px;
+    text-align: left;
+}
+th {
+    background: #e4e8ef;
+}

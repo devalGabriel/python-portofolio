@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Analizator Excel Contabil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>📊 Analizator fișiere Excel Contabile</h1>
+    <form method="POST" enctype="multipart/form-data" {% if need_conturi %}style="display:none;"{% endif %}>
+        <input type="file" name="file" accept=".xls,.xlsx" required>
+        <button type="submit">Încarcă fișier</button>
+    </form>
+
+    {% if need_conturi %}
+        <h2>Completează conturile contabile</h2>
+        <form method="POST">
+            <input type="hidden" name="filename" value="{{ filename }}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Suma</th>
+                        <th>Tip</th>
+                        <th>Categorie</th>
+                        <th>Cont contabil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for idx, row in enumerate(rows) %}
+                    <tr>
+                        <td>{{ row.Suma }}</td>
+                        <td>{{ row.Tip }}</td>
+                        <td>{{ row.Categorie }}</td>
+                        <td>
+                            <input type="text" name="conturi_{{ idx }}" required placeholder="ex: 704, 401" style="width:90px;">
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit">Salvează și analizează</button>
+        </form>
+    {% endif %}
+
+    {% if summary %}
+        {% if summary.error %}
+            <p style="color:red;">{{ summary.error }}</p>
+        {% else %}
+            <h2>Sumar rapid</h2>
+            <p>Încasări: <b>{{ summary.incasari }}</b> lei</p>
+            <p>Plăți: <b>{{ summary.plati }}</b> lei</p>
+            <p>Sold final: <b>{{ summary.sold_final }}</b> lei</p>
+            <h3>Pe categorii:</h3>
+            <ul>
+                {% for cat, val in summary.categorii.items() %}
+                    <li>{{ cat }}: {{ val }} lei</li>
+                {% endfor %}
+            </ul>
+            <h3>Pe conturi contabile:</h3>
+            <ul>
+                {% for cont, val in summary.conturi.items() %}
+                    <li>{{ cont }}: {{ val }} lei</li>
+                {% endfor %}
+            </ul>
+            {% if chart_url %}
+                <img src="{{ chart_url }}" style="max-width:450px;">
+            {% endif %}
+            <br>
+            {% if report_link %}
+                <a href="{{ report_link }}">Vizualizează raport detaliat</a><br>
+            {% endif %}
+            <a href="{{ url_for('export_report', filename=filename, fmt='pdf') }}">Exportă PDF</a> |
+            <a href="{{ url_for('export_report', filename=filename, fmt='csv') }}">Exportă CSV</a>
+        {% endif %}
+    {% endif %}
+</div>
+</body>
+</html>

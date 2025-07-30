@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Raport Detaliat Contabil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <!-- Filtrare -->
+<form method="get">
+    <label>Lună:
+        <select name="luna">
+            <option value="">Toate</option>
+            {% for l in luni %}
+                <option value="{{ l }}" {% if selected_luna==l %}selected{% endif %}>{{ l }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>Categorie:
+        <select name="categorie">
+            <option value="">Toate</option>
+            {% for c in categorii %}
+                <option value="{{ c }}" {% if selected_cat==c %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>Cont:
+        <select name="cont">
+            <option value="">Toate</option>
+            {% for cc in conturi %}
+                <option value="{{ cc }}" {% if selected_cont==cc %}selected{% endif %}>{{ cc }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <button type="submit">Aplică filtre</button>
+    <a href="{{ url_for('show_report', filename=filename) }}">Resetează</a>
+</form>
+<br>
+<!-- Search rapid -->
+<input type="text" id="searchInput" placeholder="Caută în tabel..." style="margin-bottom:10px;padding:6px;">
+
+<!-- Tabel cu sortare și highlight -->
+<table id="tranzactiiTable">
+    <thead>
+        <tr>
+            <th onclick="sortTable(0)">Suma</th>
+            <th onclick="sortTable(1)">Tip</th>
+            <th onclick="sortTable(2)">Categorie</th>
+            <th onclick="sortTable(3)">Cont</th>
+            <th onclick="sortTable(4)">Dată</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% set suma_prag = 10000 %}
+        {% for row in filtered_rows %}
+        <tr {% if row.suma > suma_prag %}style="background:#ffdbdb;"{% endif %}>
+            <td>{{ row.suma }}</td>
+            <td>{{ row.tip }}</td>
+            <td>{{ row.categorie }}</td>
+            <td>{{ row.cont }}</td>
+            <td>{{ row.data }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Subtotaluri pe categorii -->
+<h4>Subtotal pe categorii:</h4>
+<ul>
+    {% for cat, val in subtot_categ.items() %}
+        <li><b>{{ cat }}</b>: {{ val }} lei</li>
+    {% endfor %}
+</ul>
+<h4>Subtotal pe conturi:</h4>
+<ul>
+    {% for cont, val in subtot_cont.items() %}
+        <li><b>{{ cont }}</b>: {{ val }} lei</li>
+    {% endfor %}
+</ul>
+
+<script>
+// Search rapid
+document.getElementById('searchInput').addEventListener('keyup', function() {
+    var input = this.value.toLowerCase();
+    var rows = document.querySelectorAll('#tranzactiiTable tbody tr');
+    rows.forEach(function(row) {
+        row.style.display = row.innerText.toLowerCase().indexOf(input) > -1 ? '' : 'none';
+    });
+});
+
+// Sortare tabel JS simplu (numeric și alfabetic)
+function sortTable(n) {
+    var table = document.getElementById("tranzactiiTable");
+    var switching = true, dir = "asc", switchcount = 0, rows, shouldSwitch, i, x, y;
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < rows.length - 1; i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[n];
+            y = rows[i + 1].getElementsByTagName("TD")[n];
+            if (dir === "asc") {
+                if (!isNaN(parseFloat(x.innerHTML)) && !isNaN(parseFloat(y.innerHTML))) {
+                    if (parseFloat(x.innerHTML) > parseFloat(y.innerHTML)) { shouldSwitch = true; break; }
+                } else {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) { shouldSwitch = true; break; }
+                }
+            } else {
+                if (!isNaN(parseFloat(x.innerHTML)) && !isNaN(parseFloat(y.innerHTML))) {
+                    if (parseFloat(x.innerHTML) < parseFloat(y.innerHTML)) { shouldSwitch = true; break; }
+                } else {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) { shouldSwitch = true; break; }
+                }
+            }
+        }
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            switchcount++;
+        } else {
+            if (switchcount === 0 && dir === "asc") { dir = "desc"; switching = true; }
+        }
+    }
+}
+</script>
+
+    <h1>Raport Detaliat Fișier Excel</h1>
+    {% if summary %}
+        <h2>Sumar</h2>
+        <p>Încasări: <b>{{ summary.incasari }}</b> lei</p>
+        <p>Plăți: <b>{{ summary.plati }}</b> lei</p>
+        <p>Sold final: <b>{{ summary.sold_final }}</b> lei</p>
+        <h3>Pe categorii:</h3>
+        <ul>
+            {% for cat, val in summary.categorii.items() %}
+                <li>{{ cat }}: {{ val }} lei</li>
+            {% endfor %}
+        </ul>
+        <h3>Pe conturi contabile:</h3>
+        <ul>
+            {% for cont, val in summary.conturi.items() %}
+                <li>{{ cont }}: {{ val }} lei</li>
+            {% endfor %}
+        </ul>
+        {% if chart_url %}
+            <img src="{{ chart_url }}" style="max-width:450px;">
+        {% endif %}
+        <hr>
+        {% if evol_chart_url %}
+            <h3>Evoluție sold pe luni:</h3>
+            <img src="{{ evol_chart_url }}" style="max-width: 600px;">
+        {% endif %}
+        <hr>
+        <h3>Toate tranzacțiile:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Suma</th>
+                    <th>Tip</th>
+                    <th>Categorie</th>
+                    <th>Cont</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for row in summary.rows %}
+                <tr>
+                    <td>{{ row.suma }}</td>
+                    <td>{{ row.tip }}</td>
+                    <td>{{ row.categorie }}</td>
+                    <td>{{ row.cont }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <h4>Tranzacții anormale (peste 10.000 lei):</h4>
+        <ul>
+            {% for a in anomalii %}
+                <li>{{ a.data }} - {{ a.categorie }}: {{ a.suma }} lei ({{ a.cont }})</li>
+            {% endfor %}
+            {% if anomalii|length == 0 %}
+                <li>Nu există tranzacții anormale</li>
+            {% endif %}
+        </ul>
+        <h4>Top 5 cheltuieli pe categorii:</h4>
+        <ol>
+            {% for c, val in top_categorii %}
+                <li>{{ c }}: {{ val }} lei</li>
+            {% endfor %}
+        </ol>
+
+        <br>
+        <a href="{{ url_for('export_report', filename=filename, fmt='pdf') }}">Exportă PDF</a> |
+        <a href="{{ url_for('export_report', filename=filename, fmt='csv') }}">Exportă CSV</a>
+        <br>
+        <a href="{{ url_for('index') }}">⬅ Înapoi la upload</a>
+    {% else %}
+        <p>Date de raport indisponibile.</p>
+    {% endif %}
+</div>
+</body>
+</html>
