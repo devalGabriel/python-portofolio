@@ -1,0 +1,35 @@
+{% extends "simulation/base.html" %}
+{% block content %}
+<h2>Rezultat Simulare Investiții</h2>
+{% if error %}
+    <p style="color:red;">{{ error }}</p>
+{% else %}
+    <h3>Parametri:</h3>
+    <ul>
+        <li>Suma inițială: {{ params.suma_initiala }} lei</li>
+        <li>Aport lunar: {{ params.aport_lunar }} lei</li>
+        <li>Durată: {{ params.ani }} ani</li>
+    </ul>
+    <h3>Evoluție pe ani:</h3>
+    <table>
+        <tr>
+            <th>An</th>
+            <th>Investiție imobiliare</th>
+            <th>Investiție bursă</th>
+        </tr>
+        {% for row in rows %}
+        <tr>
+            <td>{{ row.an }}</td>
+            <td>{{ row.imobiliar|floatformat:2 }}</td>
+            <td>{{ row.bursa|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <h4>Valoare finală:</h4>
+    <ul>
+        <li>Imobiliare: <b>{{ rez_imobiliar }}</b> lei</li>
+        <li>Bursă: <b>{{ rez_bursa }}</b> lei</li>
+    </ul>
+{% endif %}
+<p><a href="{% url 'simulation_form' %}">⟵ Înapoi la simulare</a></p>
+{% endblock %}

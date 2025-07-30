@@ -1,0 +1,9 @@
+{% extends "simulation/base.html" %}
+{% block content %}
+<h2>Simulare investiție: Imobiliare vs. Bursă</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Simulează</button>
+</form>
+{% endblock %}

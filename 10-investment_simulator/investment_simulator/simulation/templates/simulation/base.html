@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulări Investiționale</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin:40px; background: #f4f7fa; }
+        .container { background: #fff; border-radius: 8px; padding: 30px; max-width: 800px; margin: auto; }
+        h2, h3 { color: #336699; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #b0c4de; padding: 8px 10px; }
+        th { background: #e6ecf5; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1><a href="{% url 'home' %}" style="color: #336699; text-decoration: none;">Simulări Investiționale</a></h1>
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>
